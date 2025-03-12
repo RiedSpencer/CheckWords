@@ -1,1 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字母展示</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .letter-container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            font-size: 30px;
+        }
+
+        .letter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 8px;
+            height: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .letter:hover {
+            transform: scale(1.1);
+            background-color: #ff7e5f;
+            color: #fff;
+        }
+
+        .blank {
+            background-color: #fff8dc;
+            border: 2px dashed #ff7e5f;
+            box-shadow: none;
+            padding: 5px;
+        }
+
+        input[type="text"] {
+            width: 35px;
+            height: 35px;
+            text-align: center;
+            font-size: 20px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff7e5f;
+            box-shadow: 0 0 10px rgba(255, 126, 95, 0.6);
+        }
+
+        input.error {
+            border: 2px solid red;
+            background-color: #f8d7da;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #ff7e5f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e65a4e;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .letter-container {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .letter-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="letter-container" id="letter-container"></div>
+        <div class="buttons">
+            <button id="submit-btn">完成</button>
+            <button id="refresh-btn">刷新</button>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        // 创建字母列表
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        // 随机选择5个字母的填空
+        const randomLetters = getRandomLetters(5);
+        const userAnswers = {};
+
+        // 获取字母容器和结果显示容器
+        const letterContainer = document.getElementById('letter-container');
+        const resultContainer = document.getElementById('result');
+
+        // 渲染字母
+        function renderLetters() {
+            letterContainer.innerHTML = ''; // 清空容器
+            alphabet.forEach(letter => {
+                if (randomLetters.includes(letter)) {
+                    const inputDiv = document.createElement('div');
+                    inputDiv.classList.add('letter', 'blank');
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.maxLength = 1;
+                    input.setAttribute('data-letter', letter); // 用 data- 属性保存字母信息
+                    inputDiv.appendChild(input);
+                    letterContainer.appendChild(inputDiv);
+                    userAnswers[letter] = ''; // 初始化用户答案对象
+                } else {
+                    const div = document.createElement('div');
+                    div.classList.add('letter');
+                    div.textContent = letter;
+                    letterContainer.appendChild(div);
+                }
+            });
+        }
+
+        // 获取随机的字母集合
+        function getRandomLetters(count) {
+            const randomIndexes = [];
+            while (randomIndexes.length < count) {
+                const randomIndex = Math.floor(Math.random() * alphabet.length);
+                if (!randomIndexes.includes(randomIndex)) {
+                    randomIndexes.push(randomIndex);
+                }
+            }
+            return randomIndexes.map(index => alphabet[index]);
+        }
+
+        // 校验用户输入
+        function checkAnswers() {
+            let correctCount = 0;
+
+            // 遍历每个输入框，检查用户输入
+            const inputs = document.querySelectorAll('input[type="text"]');
+            inputs.forEach(input => {
+                const correctLetter = input.getAttribute('data-letter');
+                const userInput = input.value.toUpperCase();
+
+                // 如果输入正确
+                if (userInput === correctLetter) {
+                    correctCount++;
+                    input.classList.remove('error'); // 移除错误样式
+                } else {
+                    input.classList.add('error'); // 添加错误样式
+                }
+            });
+
+            // 显示结果
+            resultContainer.textContent = `你答对了 ${correctCount} / 5 个字母！`;
+        }
+
+        // 刷新页面
+        function refreshPage() {
+            window.location.reload();
+        }
+
+        // 事件绑定
+        document.getElementById('submit-btn').addEventListener('click', checkAnswers);
+        document.getElementById('refresh-btn').addEventListener('click', refreshPage);
+
+        // 初始化页面
+        renderLetters();
+    </script>
+</body>
+</html>
 
