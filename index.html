@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>填空练习</title>
+    <title>学习任务</title>
     <style>
-        /* 基础样式重置 */
         * {
             margin: 0;
             padding: 0;
@@ -13,79 +12,95 @@
         }
 
         body {
-            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f2f5;
-            font-family: Arial, "Microsoft Yahei", sans-serif;
+            height: 100vh;
+            color: #333;
+            padding: 0 10px;
         }
 
-        /* 按钮容器样式 */
-        .button-container {
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 40px 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .btn-container {
             display: flex;
-            gap: 30px; /* 按钮间距 */
+            flex-direction: column;
+            gap: 15px;
         }
 
-        /* 通用按钮样式 */
-        .exercise-btn {
-            padding: 15px 30px;
+        .btn {
+            display: inline-block;
+            padding: 16px;
             font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background-color: #1890ff;
             color: white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #4CAF50;
+            border-radius: 8px;
+            text-decoration: none;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        /* 悬停效果 */
-        .exercise-btn:hover {
-            background-color: #40a9ff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        .btn:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
         }
 
-        /* 第二个按钮颜色区分 */
-        .exercise-btn:nth-child(2) {
-            background-color: #52c41a;
-        }
-        
-        .exercise-btn:nth-child(2):hover {
-            background-color: #73d13d;
+        .btn:active {
+            background-color: #388e3c;
+            transform: translateY(0);
         }
 
-      /* 添加媒体查询适配移动端 */
+        .btn-container a:focus {
+            outline: none;
+        }
+
+        /* 移动端适配 */
         @media (max-width: 480px) {
-            .button-container {
-                flex-direction: column;
-                gap: 20px;
+            h1 {
+                font-size: 22px;
             }
-            
-            .exercise-btn {
-                width: 200px;
-                padding: 12px 20px;
+            .container {
+                padding: 30px 15px;
             }
+            .btn {
+                padding: 14px;
+                font-size: 16px;
+            }
+        }
+
+        /* 增加背景渐变 */
+        body {
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
         }
     </style>
 </head>
 <body>
-    <div class="button-container">
-        <button class="exercise-btn">字母表填空</button>
-        <button class="exercise-btn">单词填空</button>
+    <div class="container">
+        <h1>选择一个学习任务</h1>
+        <div class="btn-container">
+            <a href="alphabet.html" class="btn">字母表填空</a>
+            <a href="addition-subtraction.html" class="btn">十以内加减</a>
+            <a href="multiplication-table.html" class="btn">九九乘法表</a>
+            <a href="word-fill-in.html" class="btn">单词填空</a>
+        </div>
     </div>
-
-    <script>
-      // 字母表填空功能示例
-      document.querySelector('.exercise-btn:first-child').addEventListener('click', () => {
-          window.location.href = '/fillletters.html'; // 跳转练习页
-      });
-      
-      // 单词填空功能示例
-      document.querySelector('.exercise-btn:last-child').addEventListener('click', () => {
-          showWordExerciseModal(); // 显示单词练习弹窗
-      });
-    </script>
 </body>
 </html>
