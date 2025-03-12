@@ -1,25 +1,91 @@
-<html>
-  <head></head>
-  <body>
-    <h3>fill the none words</h3>
-    <table>
-      <tr>
-        <td>A</td>
-        <td>B</td>
-        <td><input type="text" id="uppercaseInput" maxlength="1" style="text-transform: uppercase"></td>
-        <td>D</td>
-        <td>E</td>
-        <td>F</td>
-        <td>G</td>
-      </tr>
-    </table>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>填空练习</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+            font-family: Arial, "Microsoft Yahei", sans-serif;
+        }
+
+        /* 按钮容器样式 */
+        .button-container {
+            display: flex;
+            gap: 30px; /* 按钮间距 */
+        }
+
+        /* 通用按钮样式 */
+        .exercise-btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #1890ff;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 悬停效果 */
+        .exercise-btn:hover {
+            background-color: #40a9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 第二个按钮颜色区分 */
+        .exercise-btn:nth-child(2) {
+            background-color: #52c41a;
+        }
+        
+        .exercise-btn:nth-child(2):hover {
+            background-color: #73d13d;
+        }
+
+      /* 添加媒体查询适配移动端 */
+        @media (max-width: 480px) {
+            .button-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .exercise-btn {
+                width: 200px;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button class="exercise-btn">字母表填空</button>
+        <button class="exercise-btn">单词填空</button>
+    </div>
+
     <script>
-      //document.getElementById('uppercaseInput').addEventListener('input', function(e) {
-          // 过滤非字母字符并转为大写
-        //  let filteredValue = this.value.replace(/[^A-Za-z]/g, '').toUpperCase();
-          // 确保只保留第一个字符（处理粘贴多字符的情况）
-          //this.value = filteredValue.slice(0, 1);
-      //});
+      // 字母表填空功能示例
+      document.querySelector('.exercise-btn:first-child').addEventListener('click', () => {
+          window.location.href = '/alphabet-exercise'; // 跳转练习页
+      });
+      
+      // 单词填空功能示例
+      document.querySelector('.exercise-btn:last-child').addEventListener('click', () => {
+          showWordExerciseModal(); // 显示单词练习弹窗
+      });
     </script>
-  </body>
+</body>
 </html>
