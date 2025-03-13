@@ -69,6 +69,7 @@
             justify-content: center;
             gap: 10px;
             margin: 20px 0;
+            flex-wrap: wrap; /* 确保小屏幕时输入框换行 */
         }
 
         .blank {
@@ -84,7 +85,7 @@
         }
 
         .fill-in-blanks input {
-            width: 20px;
+            width: 100%; /* 输入框占满父元素宽度 */
             padding: 12px;
             margin-left: -3px;
             margin-top: -5px;
@@ -116,7 +117,6 @@
             background-color: #45a049;
         }
 
-
         /* 响应式设计 */
         @media (max-width: 600px) {
             .english-word {
@@ -136,13 +136,31 @@
             }
 
             .fill-in-blanks {
-                gap: 5px;
+                gap: 10px;
             }
 
             .blank {
                 width: 30px;
                 height: 30px;
                 font-size: 18px;
+            }
+
+            .fill-in-blanks input {
+                width: 15px; /* 输入框宽度调整 */
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px 16px;
+                margin: 8px 5px;
+            }
+        }
+
+        /* 大屏幕设备适配 */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 800px;
+                padding: 30px;
             }
         }
 
@@ -163,11 +181,11 @@
 
         <!-- 填空题 -->
         <div class="fill-in-blanks">
-            <div class="blank"><input type="text" id="blank1" maxlength="1" oninput="moveToNext(1)"></div>
-            <div class="blank"><input type="text" id="blank2" maxlength="1" oninput="moveToNext(2)"></div>
-            <div class="blank"><input type="text" id="blank3" maxlength="1" oninput="moveToNext(3)"></div>
-            <div class="blank"><input type="text" id="blank4" maxlength="1" oninput="moveToNext(4)"></div>
-            <div class="blank"><input type="text" id="blank5" maxlength="1" oninput="moveToNext(5)"></div>
+            <div class="blank"><input type="text" id="blank1" maxlength="1" onkeydown="handleKeyDown(1, event)" ></div>
+            <div class="blank"><input type="text" id="blank2" maxlength="1" onkeydown="handleKeyDown(2, event)" ></div>
+            <div class="blank"><input type="text" id="blank3" maxlength="1" onkeydown="handleKeyDown(3, event)" ></div>
+            <div class="blank"><input type="text" id="blank4" maxlength="1" onkeydown="handleKeyDown(4, event)" ></div>
+            <div class="blank"><input type="text" id="blank5" maxlength="1" onkeydown="handleKeyDown(5, event)" ></div>
         </div>
 
         <!-- 提交和刷新按钮 -->
@@ -179,10 +197,15 @@
     </div>
 
     <script>
-        // 自动跳到下一个输入框
-        function moveToNext(current) {
+        function handleKeyDown(current, event) {
+            if (event.key === 'Backspace' || event.key === 'Delete') {
+                const previousInput = document.getElementById('blank' + (current - 1));
+                if (previousInput) {
+                    previousInput.focus();
+                }
+            }
             const nextInput = document.getElementById('blank' + (current + 1));
-            if (nextInput && document.getElementById('blank' + current).value.length === 1) {
+            if (event.inputType !== 'deleteContentBackward' && nextInput && document.getElementById('blank' + current).value.length === 1) {
                 nextInput.focus();
             }
         }
@@ -224,6 +247,7 @@
             for (let i = 1; i <= 5; i++) {
                 document.getElementById('blank' + i).value = '';
                 document.getElementById('blank' + i).style.borderColor = '#ccc';  // 恢复默认边框颜色
+                document.getElementById('blank' + i).style.backgroundColor = '#fff';  // 恢复默认背景颜色
             }
         }
     </script>
