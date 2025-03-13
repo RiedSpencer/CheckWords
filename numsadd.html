@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加减法题目</title>
+    <title>十以内加减法练习</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f4f8;
+            padding: 20px;
             margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,235 +17,250 @@
         }
 
         .container {
-            background-color: #fff;
+            background: white;
+            border-radius: 16px;
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 600px;
+            max-width: 900px; /* PC 端最大宽度 */
+        }
+
+        .title {
             text-align: center;
-        }
-
-        h1 {
-            font-size: 28px;
-            color: #333;
-            margin-bottom: 30px;
-            font-weight: 600;
-        }
-
-        .question {
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px;
+            color: #2c3e50;
+            margin-bottom: 40px; /* 增加标题与题目之间的间距 */
+            font-size: 32px; /* 增加字体大小 */
             font-weight: bold;
-            color: #333;
         }
 
-        .question label {
-            margin-right: 10px;
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* PC 端每行 2 个问题 */
+            gap: 25px; /* 增加题目之间的间距 */
+            margin-bottom: 30px;
         }
 
-        input[type="number"] {
-            width: 80px;
-            font-size: 24px;
-            padding: 10px;
+        .question-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            transition: transform 0.2s, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .question-text {
+            font-size: 24px; /* 增大字体 */
+            color: #495057;
+            min-width: 130px; /* 增加问题文本宽度 */
+            text-align: left;
+        }
+
+        input {
+            width: 100px;
+            padding: 12px;
+            border: 2px solid #4dabf7;
+            border-radius: 12px;
+            font-size: 20px;
             text-align: center;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            outline: none;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: #f0f8ff;
         }
 
-        input[type="number"]:focus {
-            border-color: #007bff;
+        input:focus {
+            outline: none;
+            border-color: #339af0;
+            box-shadow: 0 0 0 4px rgba(77, 171, 247, 0.2);
         }
 
         .button-container {
             display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            font-size: 20px;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            width: 100%;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .refresh-btn {
-            background-color: #ffc107;
-            color: #333;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .refresh-btn:hover {
-            background-color: #e0a800;
-        }
-
-        .result {
-            font-size: 24px;
-            color: #333;
-            font-weight: 600;
+            justify-content: center;
+            gap: 40px; /* 增加按钮之间的间距 */
             margin-top: 30px;
         }
 
-        .correct {
-            color: #28a745;
-        }
-
-        .incorrect {
-            color: #dc3545;
-        }
-
-        .happy {
-            font-size: 28px;
-        }
-
-        .sad {
-            font-size: 28px;
-        }
-
-        .result span {
+        button {
+            padding: 16px 45px; /* 增加按钮的大小 */
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
             font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
+        #submitBtn {
+            background: linear-gradient(135deg, #4dabf7, #339af0);
+            color: white;
+        }
+
+        #refreshBtn {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: scale(0.98);
+            box-shadow: none;
+        }
+
+        .correct {
+            border-color: #51cf66 !important;
+            background-color: #ebfbee;
+        }
+
+        .wrong {
+            border-color: #ff6b6b !important;
+            background-color: #fff5f5;
+        }
+
+        .empty {
+            border-color: #ff9800 !important;
+            background-color: #fff3e0;
+        }
+
+        /* 媒体查询：小屏设备 */
         @media (max-width: 600px) {
-            .container {
-                padding: 30px;
+            .questions-grid {
+                grid-template-columns: 1fr; /* 单列布局 */
             }
 
-            h1 {
-                font-size: 24px;
+            .question-item {
+                flex-direction: row; /* 修改为横向排列 */
+                align-items: center;
+                padding: 20px;
             }
 
-            input[type="number"] {
-                width: 70px;
+            .question-text {
                 font-size: 20px;
-                padding: 8px;
             }
 
-            button, .refresh-btn {
-                padding: 12px 25px;
-                font-size: 18px;
+            input {
+                width: 70px;
+                font-size: 16px;
             }
 
-            .button-container {
-                flex-direction: column;
+            button {
+                padding: 12px 30px;
+                font-size: 16px;
             }
+        }
 
-            .button-container button {
-                width: 100%;
+        /* 媒体查询：中屏设备 */
+        @media (max-width: 768px) and (min-width: 601px) {
+            .questions-grid {
+                grid-template-columns: repeat(2, 1fr); /* 保持两列布局 */
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>加减法题目</h1>
-
-        <form id="quiz-form">
-            <!-- 问题会在这里动态生成 -->
-        </form>
-
+        <h1 class="title">十以内加减法练习</h1>
+        <div class="questions-grid" id="questionsContainer"></div>
         <div class="button-container">
-            <button onclick="checkAnswers()">提交答案</button>
-            <button class="refresh-btn" onclick="generateQuestions()">刷新题目</button>
+            <button id="submitBtn">提交答案</button>
+            <button id="refreshBtn">刷新题目</button>
         </div>
-
-        <div class="result" id="result"></div>
     </div>
 
     <script>
-        // 生成6道题目
-        function generateQuestions() {
-            const operators = ['+', '-'];
-            const form = document.getElementById('quiz-form');
-            form.innerHTML = ""; // 清空表单
+        function generateUniqueQuestions() {
+            const questions = new Set();
+            
+            while (questions.size < 6) {
+                const isAddition = Math.random() < 0.5;
+                let a, b, question;
 
-            for (let i = 0; i < 6; i++) {
-                let num1, num2, operator, questionText, correctAnswer;
-
-                // 生成有效的题目（减法结果不能为负数）
-                do {
-                    num1 = Math.floor(Math.random() * 10); // 生成0-9之间的数字
-                    num2 = Math.floor(Math.random() * 10); // 生成0-9之间的数字
-                    operator = operators[Math.floor(Math.random() * operators.length)];
-                    
-                    if (operator === '+') {
-                        correctAnswer = num1 + num2;
-                    } else if (operator === '-') {
-                        if (num1 >= num2) { // 确保减法结果不为负数
-                            correctAnswer = num1 - num2;
-                        } else {
-                            correctAnswer = -1; // 使得不符合条件的题目重新生成
-                        }
-                    }
-
-                    questionText = `${num1} ${operator} ${num2} =`;
-                } while (correctAnswer < 0); // 直到生成合法的题目
-
-                // 创建每道题目
-                const div = document.createElement('div');
-                div.classList.add('question');
-
-                const label = document.createElement('label');
-                label.innerHTML = questionText;
-
-                const input = document.createElement('input');
-                input.type = 'number';
-                input.name = `answer-${i}`;
-                input.required = true;
-
-                div.appendChild(label);
-                div.appendChild(input);
-                form.appendChild(div);
-            }
-        }
-
-        // 检查答案
-        function checkAnswers() {
-            const form = document.getElementById('quiz-form');
-            const inputs = form.querySelectorAll('input[type="number"]');
-            let correctCount = 0;
-            let incorrectCount = 0;
-
-            inputs.forEach((input, index) => {
-                const questionDiv = input.closest('.question');
-                const questionText = questionDiv.querySelector('label').textContent;
-                const [num1, operator, num2] = questionText.split(' ').map(e => isNaN(e) ? e : parseInt(e));
-
-                let correctAnswer;
-                if (operator === '+') {
-                    correctAnswer = num1 + num2;
-                } else if (operator === '-') {
-                    correctAnswer = num1 - num2;
+                if (isAddition) {
+                    a = Math.floor(Math.random() * 9) + 1; // 1-9
+                    b = Math.floor(Math.random() * (10 - a)) + 1; // 确保和不超10
+                    [a, b] = [Math.min(a, b), Math.max(a, b)]; // 统一排序
+                    question = `${a} + ${b}`;
+                } else {
+                    a = Math.floor(Math.random() * 9) + 2; // 2-10（保证被减数至少2）
+                    b = Math.floor(Math.random() * (a - 1)) + 1; // 1到a-1
+                    question = `${a} - ${b}`;
                 }
 
-                if (parseInt(input.value) === correctAnswer) {
-                    correctCount++;
-                } else {
-                    incorrectCount++;
+                if (!questions.has(question)) {
+                    questions.add(question);
+                }
+            }
+
+            return Array.from(questions).map(q => {
+                const parts = q.split(' ');
+                const operator = parts[1];
+                const answer = operator === '+' ? 
+                    parseInt(parts[0]) + parseInt(parts[2]) :
+                    parseInt(parts[0]) - parseInt(parts[2]);
+                return { question: q, answer };
+            });
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            const questions = generateUniqueQuestions();
+
+            questions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'question-item';
+                div.innerHTML = `
+                    <span class="question-text">${q.question} =</span>
+                    <input type="number" min="0" data-answer="${q.answer}">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // 提交答案处理
+        document.getElementById('submitBtn').addEventListener('click', () => {
+            let hasEmpty = false; // 标记是否有未填写的题目
+            document.querySelectorAll('input').forEach(input => {
+                const correctAnswer = parseInt(input.dataset.answer);
+                const userAnswer = input.value.trim(); // 去掉空格
+
+                input.classList.remove('correct', 'wrong', 'empty');
+
+                if (userAnswer === '') {
+                    input.classList.add('empty'); // 标记为空
+                    hasEmpty = true;
+                } else if (parseInt(userAnswer) === correctAnswer) {
+                    input.classList.add('correct');
+                } else if (!isNaN(userAnswer)) {
+                    input.classList.add('wrong');
                 }
             });
+        });
 
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `你答对了 <span class="correct">${correctCount}</span> 道题目，错了 <span class="incorrect">${incorrectCount}</span> 道题目。`;
-        }
+        // 刷新题目处理
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            renderQuestions();
+            document.querySelectorAll('input').forEach(input => {
+                input.value = '';
+                input.classList.remove('correct', 'wrong', 'empty');
+            });
+        });
 
-        // 页面加载时生成题目
-        window.onload = generateQuestions;
+        // 初始加载
+        renderQuestions();
     </script>
 </body>
 </html>
