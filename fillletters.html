@@ -156,7 +156,7 @@
         // 渲染字母
         function renderLetters() {
             letterContainer.innerHTML = ''; // 清空容器
-            alphabet.forEach(letter => {
+            alphabet.forEach((letter) => {
                 if (randomLetters.includes(letter)) {
                     const inputDiv = document.createElement('div');
                     inputDiv.classList.add('letter', 'blank');
@@ -174,6 +174,37 @@
                     letterContainer.appendChild(div);
                 }
             });
+
+            addInputEventListeners(); // 添加输入框事件监听
+            // 初始化聚焦到第一个输入框
+            document.getElementById('input0')?.focus();
+        }
+
+        function addInputEventListeners() {
+            const inputs = document.querySelectorAll('input[type="text"]');
+            inputs.forEach((input, index) => {
+                input.id = 'input' + index;
+                input.addEventListener('keydown', (event) => handleKeyDown(event,index));
+            });
+        }
+
+        // 处理键盘按下事件
+        function handleKeyDown(event, currentIndex) {
+            const prevInput = document.getElementById('input' + (currentIndex - 1));
+            const nextInput = document.getElementById('input' + (currentIndex + 1));
+
+            // 删除键：跳到上一个输入框
+            if (event.key === 'Backspace' || event.key === 'Delete') {
+                if (prevInput) {
+                    prevInput.focus();
+                }
+            }
+            else if (event.key.length === 1 && nextInput) {
+                // document.getElementById('input' + currentIndex).value = event.key.toUpperCase();
+                setTimeout(function() {
+                    nextInput.focus();
+                }, 500);
+            }
         }
 
         // 获取随机的字母集合
@@ -225,4 +256,3 @@
     </script>
 </body>
 </html>
-
